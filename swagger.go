@@ -19,6 +19,7 @@ var (
 
 var (
 	serverAddr  = flag.String("l", ":8080", "server's listening Address")
+	swaggerPath  = flag.String("p", "/", "swagger url path")
 	swaggerFile = flag.String("f",
 		"http://petstore.swagger.io/v2/swagger.json",
 		"swagger url or local file path")
@@ -28,7 +29,9 @@ var (
 
 func main() {
 	flag.Parse()
-	fmt.Printf("Server listening on %s\n", *serverAddr)
+	fmt.Printf("Server listening on %s and path %s\n", *serverAddr, *swaggerPath)
+
+	server.SwaggerPath = *swaggerPath
 
 	// test if swagger file is a local one
 	if fileStat, err := os.Stat(*swaggerFile); err == nil &&
@@ -48,6 +51,6 @@ func main() {
 		fmt.Println("Topbar disabled")
 	}
 	fmt.Println("Swagger UI version", Version, ", build", Build)
-	http.HandleFunc("/", server.Serv)
+	http.HandleFunc(*swaggerPath, server.Serv)
 	log.Fatal(http.ListenAndServe(*serverAddr, nil))
 }

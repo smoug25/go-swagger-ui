@@ -22,6 +22,7 @@ const (
 
 var (
 	ServerAddr  = ":8080"
+	SwaggerPath = "/"
 	SwaggerFile = "http://petstore.swagger.io/v2/swagger.json"
 	LocalSwaggerDir = "/swagger"
 	EnableTopbar = false
@@ -64,7 +65,7 @@ func Serv(w http.ResponseWriter, r *http.Request) {
 }
 
 func getSource(r *http.Request) string {
-	source := r.URL.Path[1:]
+	source := r.URL.Path[len(SwaggerPath):]
 	if len(source) == 0 {
 		source = "index.html"
 	}
