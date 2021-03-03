@@ -4,6 +4,20 @@ Cross-platform [Swagger UI](https://swagger.io/swagger-ui/) built with golang wi
 a fat binary, which can help you serve your swagger documentation with only one command.
 
 ## Usage
+
+### Like a module in your golang code
+
+```shell
+go install github.com/smoug25/go-swagger-ui
+```
+Code example
+
+```go
+
+```
+
+
+### Like a server
 Download the latest release for your system on [release](https://github.com/haxii/go-swagger-ui/releases) page.
 
 Start a swagger documentation server on port `8000` for `/path/to/your/swagger.json`:
@@ -31,15 +45,6 @@ you can also replace the default API host endpoint with `host` query for local h
 http://your.ip.address:8000/?file=path/to/my-awesome-api.yaml&host=www.new.host
 ``` 
 
-To make it as a daemon:
-
-```
-$ swaggerui -s install -l "0.0.0.0:8000" -f "/path/to/your/swagger.json"
-$ swaggerui -s start
-```
-
-which could run in background and auto-start with your system.
-
 More detailed usage:
 
 ```
@@ -63,12 +68,12 @@ Source code is written in [go](https://golang.org/), [make](https://www.gnu.org/
 The Swagger UI's HTML pages in [dist](dist) folder is copied from the original [Swagger UI Source](https://github.com/swagger-api/swagger-ui/tree/master/dist), then converted into bytes array in file [static/static.go](static/static.go) using `xxd` command, to re-build it
 
 ```
-$ make static
+$ make generate
 ```
 
 By typing the following command, you can get the cross platform distributions of this program
 
 
 ```
-$ make release
+$ make build
 ```

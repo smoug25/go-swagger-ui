@@ -1,11 +1,10 @@
-module github.com/haxii/go-swagger-ui
+module github.com/smoug25/go-swagger-ui
 
-go 1.12
+go 1.14
 
 require (
-	github.com/haxii/daemon v0.0.0-20180309090221-dd470d686e70
 	github.com/json-iterator/go v1.1.8
-	github.com/takama/daemon v0.0.0-20180403113744-aa76b0035d12 // indirect
-	golang.org/x/sys v0.0.0-20181026203630-95b1ffbd15a5 // indirect
-	gopkg.in/yaml.v2 v2.2.5
+	github.com/shurcooL/httpfs v0.0.0-20190707220628-8d4bc4ba7749 // indirect
+	github.com/shurcooL/vfsgen v0.0.0-20200824052919-0d455de96546 // indirect
+	gopkg.in/yaml.v2 v2.4.0
 )
