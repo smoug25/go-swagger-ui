@@ -71,7 +71,12 @@ func Serv(w http.ResponseWriter, r *http.Request) {
 }
 
 func getSource(r *http.Request) string {
-	source := r.URL.Path[len(SwaggerPath):]
+	source := ""
+	if strings.HasPrefix(r.URL.Path, SwaggerPath) {
+		source = r.URL.Path[len(SwaggerPath):]
+	} else {
+		source = r.URL.Path[1:]
+	}
 	if len(source) == 0 {
 		source = "index.html"
 	}
@@ -183,7 +188,7 @@ func prepareIndexPage(r *http.Request, staticFile []byte) string {
 			targetSwagger = _url
 		} else if IsNativeSwaggerFile {
 			// for a native swagger file, use the filename directly
-			targetSwagger = SwaggerPath + NativeSwaggerFileName
+			targetSwagger = NativeSwaggerFileName
 		}
 	// replace the target swagger file in index
 	indexHTML := string(staticFile)
