@@ -6,8 +6,6 @@ import (
 	"github.com/smoug25/go-swagger-ui/server"
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
 )
 
 var (
@@ -23,22 +21,16 @@ var (
 	swaggerFile = flag.String("f",
 		"http://petstore.swagger.io/v2/swagger.json",
 		"swagger url or local file path")
-	localSwaggerDir = flag.String("d", "/swagger", "swagger files vhost dir")
 	enableTopbar    = flag.Bool("b", false, "enable the topbar")
 )
 
 func main() {
 	flag.Parse()
 	fmt.Printf("Server listening on %s and path %s\n", *serverAddr, *swaggerPath)
-
 	server.SwaggerPath = *swaggerPath
 
 	// test if swagger file is a local one
-	if fileStat, err := os.Stat(*swaggerFile); err == nil &&
-		fileStat.Mode().IsRegular() {
-		server.IsNativeSwaggerFile = true
-		server.NativeSwaggerFileName = filepath.Base(*swaggerFile)
-	}
+	server.SetSwaggerFile(*swaggerFile)
 	if server.IsNativeSwaggerFile {
 		fmt.Printf("Using default local swagger file %s\n", *swaggerFile)
 	} else {

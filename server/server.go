@@ -21,24 +21,30 @@ const (
 )
 
 var (
-	ServerAddr  = ":8080"
-	SwaggerPath = "/"
-	SwaggerFile = "http://petstore.swagger.io/v2/swagger.json"
-	LocalSwaggerDir = "/swagger"
-	EnableTopbar = false
+	ServerAddr            = ":8080"
+	SwaggerPath           = "/"
+	swaggerFile           = "http://petstore.swagger.io/v2/swagger.json"
+	EnableTopbar          = false
 	IsNativeSwaggerFile   = false
 	NativeSwaggerFileName = ""
 )
+
+// SetSwaggerFile local path or url
+func SetSwaggerFile(swaggerFilePath string) {
+	if fileStat, err := os.Stat(swaggerFilePath); err == nil &&
+		fileStat.Mode().IsRegular() {
+		IsNativeSwaggerFile = true
+		NativeSwaggerFileName = filepath.Base(swaggerFilePath)
+	}
+	swaggerFile = swaggerFilePath
+}
 
 func Serv(w http.ResponseWriter, r *http.Request) {
 	source := getSource(r)
 	// serve the local file
 	localFile := ""
 	if IsNativeSwaggerFile && source == NativeSwaggerFileName {
-		localFile = SwaggerFile
-	} else if strings.HasPrefix(source, "swagger/") {
-		// we treat path started with swagger as a direct request of a local swagger file
-		localFile = filepath.Join(LocalSwaggerDir, source[len("swagger/"):])
+		localFile = swaggerFile
 	}
 	if len(localFile) > 0 {
 		serveLocalFile(localFile, w, r)
@@ -157,7 +163,7 @@ func setContentType(w http.ResponseWriter, source string) {
 }
 
 func prepareIndexPage(r *http.Request, staticFile []byte) string {
-		targetSwagger := SwaggerFile
+		targetSwagger := swaggerFile
 		if f := r.URL.Query().Get(querySwaggerFileKey); len(f) > 0 {
 			// requesting a local file, join it with a `swagger/` prefix
 			base, err := url.Parse("swagger/")
@@ -177,7 +183,7 @@ func prepareIndexPage(r *http.Request, staticFile []byte) string {
 			targetSwagger = _url
 		} else if IsNativeSwaggerFile {
 			// for a native swagger file, use the filename directly
-			targetSwagger = NativeSwaggerFileName
+			targetSwagger = SwaggerPath + NativeSwaggerFileName
 		}
 	// replace the target swagger file in index
 	indexHTML := string(staticFile)

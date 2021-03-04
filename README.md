@@ -13,7 +13,19 @@ go install github.com/smoug25/go-swagger-ui
 Code example
 
 ```go
+package main
 
+import "net/http"
+import serv "github.com/smoug25/go-swagger-ui"
+
+func main() {
+    // Set swagger file local path or url 
+	serv.SetSwaggerFile("swagger/swagger.json")
+    // add swagger ui handler 
+    http.HandleFunc("/", serv.Serv)
+    // start you http server
+    http.ListenAndServe(":8080", nil)	
+}
 ```
 
 
